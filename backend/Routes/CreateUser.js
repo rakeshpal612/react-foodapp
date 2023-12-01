@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const User = require("../Models/User");
 const { body, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+const authSecret = "MyNameIsEndToEndYouTubeChannel$#";
+
+const bcrypt = require("bcryptjs");
 
 router.post(
   "/createuser",
@@ -16,10 +20,13 @@ router.post(
       return res.status(400).json({ errors: error.array() });
     }
 
+    const salt = await bcrypt.genSalt(10);
+    const secPassword = await bcrypt.hash(req.body.password, salt);
+
     try {
       await User.create({
         name: req.body.name,
-        password: req.body.password,
+        password: secPassword,
         email: req.body.email,
         location: req.body.location,
       });
@@ -49,10 +56,26 @@ router.post(
       if (!userData) {
         return res.status(400).json({ error: "Try Enter Correct Credentials" });
       }
-      if (req.body.password !== userData.password) {
+      // bcrypt compare password and using jwt
+
+      const pwdCompapre = bcrypt.compare(req.body.password, userData.password);
+      //   if (req.body.password !== userData.password) {
+      if (!pwdCompapre) {
         return res.status(400).json({ error: "Try Enter Correct Credentials" });
       }
-      return res.json({ success: true });
+
+      // Gettting data from userData for jwtAuth
+      const data = {
+        user: {
+          id: userData.id,
+        },
+      };
+
+      // sign to create 32 bit authToken
+
+      const authToken = jwt.sign(data, authSecret);
+
+      return res.json({ success: true, authToken: authToken });
     } catch (error) {
       console.log(error);
       res.json({ success: false });
