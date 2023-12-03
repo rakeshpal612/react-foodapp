@@ -24,12 +24,17 @@ const reducer = (state, action) => {
       break;
     case "UPDATE":
       let arr = [...state];
-      arr.find((data, index) => {
-        if (data.id === action.id) {
+      arr.find((food, index) => {
+        if (food.id === action.id) {
+          console.log(
+            food.qty,
+            parseInt(action.qty),
+            action.price + food.price
+          );
           arr[index] = {
-            ...data,
-            qty: parseInt(action.qty) + data.qty,
-            price: action.price + data.price,
+            ...food,
+            qty: parseInt(action.qty) + food.qty,
+            price: action.price + food.price,
           };
         }
         return arr;
