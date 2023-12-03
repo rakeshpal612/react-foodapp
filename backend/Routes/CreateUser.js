@@ -64,7 +64,7 @@ router.post(
         return res.status(400).json({ error: "Try Enter Correct Credentials" });
       }
 
-      // Gettting data from userData for jwtAuth
+      // Gettting data from userData for jwtAuth payload
       const data = {
         user: {
           id: userData.id,

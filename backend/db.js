@@ -4,17 +4,49 @@ const mongoURI =
 
 const mongoDb = async () => {
   await mongoose
-    .connect(mongoURI, { useNewUrlParser: true })
+    .connect(mongoURI)
     .then(async () => {
       console.log("connected successfully");
-      const fetchData = await mongoose.connection.db.collection("food_items");
-      fetchData.find({}).toArray(function (err, data) {
-        if (err) console.log("---", err);
-        else console.log(data);
-      });
+
+      // new wway to retrieve data
+
+      const fetchData = await mongoose.connection.db
+        .collection("food_items")
+        .find({});
+
+      fetchData
+        .toArray()
+        .then(async (data) => {
+          // console.log(data);
+          const foodCategory = await mongoose.connection.db
+            .collection("foodCategory")
+            .find({});
+          foodCategory
+            .toArray()
+            .then((catData) => {
+              global.food_items = data;
+              global.foodCategory = catData;
+            })
+            .catch((err) => console.log(err));
+          // global.food_items = data;
+        })
+        .catch((err) => console.log(err));
+
+      // global.food_items = fetchData;
+
+      // old way to retrive data from db collection
+
+      // fetchData.find({}).toArray(function (err, data) {
+      // if (err) console.log("---", err);
+      // else {
+      // console.log(data);
+      // global.food_items = data;
+      // console.log(global.food_items);
+      // }
+      // });
     })
     .catch((err) => {
-      console.error();
+      console.log(err);
     });
 };
 
