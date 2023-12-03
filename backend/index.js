@@ -1,6 +1,9 @@
 const express = require("express");
+const http = require("http");
 const app = express();
-const port = 5000;
+
+const port = process.env.PORT || 5000;
+const server = http.createServer(app);
 const mongoDb = require("./db");
 
 // cors enabling access
@@ -24,6 +27,6 @@ app.get("/", (req, res) => {
 app.use("/api", require("./Routes/CreateUser"));
 app.use("/api", require("./Routes/DisplayData"));
 app.use("/api", require("./Routes/OrderData"));
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
