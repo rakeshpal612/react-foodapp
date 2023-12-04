@@ -23,6 +23,7 @@ app.use(cors(corsOptions));
 //   );
 //   next();
 // });
+app.options("*", cors(corsOptions));
 app.use(express.json());
 
 mongoDb();
