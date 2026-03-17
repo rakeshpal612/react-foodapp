@@ -40,7 +40,7 @@ const Home = () => {
         data-bs-ride="carousel"
         style={{ objectFit: "contain !important" }}
       >
-        <div className="carousel-caption" style={{ zIndex: "10" }}>
+        {/* <div className="carousel-caption" style={{ zIndex: "10" }}>
           <div className="d-flex justify-content-center">
             <input
               className="form-control me-2"
@@ -50,14 +50,14 @@ const Home = () => {
               value={search}
               onChange={searchItem}
             />
-            {/* <button
+             <button
                 className="btn btn-outline-success text-white bg-success"
                 type="submit"
               >
                 Search
-              </button> */}
+              </button> 
           </div>
-        </div>
+        </div> */}
         <div className="carousel-inner" id="carousel">
           <div className="carousel-item active">
             <img
